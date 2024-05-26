@@ -1,3 +1,11 @@
 # pyEMO
 
 Multi-objective Optimization using Evolutionary Algorithms
+
+## NSGA-II Pareto-optimal front for ZDT-1 problem
+
+
+## NSGA-III Pareto-optimal front for DTLZ-2 problem
+
+![](figures/nsga3.png)
+
