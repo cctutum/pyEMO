@@ -37,7 +37,7 @@ toolbox.register("attr_float", uniform, BOUND_LOW, BOUND_UP, NDIM)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.attr_float)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
-toolbox.register("evaluate", benchmarks.zdt1)
+toolbox.register("evaluate", benchmarks.zdt1) # ZDT1
 toolbox.register("mate", tools.cxSimulatedBinaryBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0)
 toolbox.register("mutate", tools.mutPolynomialBounded, low=BOUND_LOW, up=BOUND_UP, eta=20.0, indpb=1.0/NDIM)
 toolbox.register("select", tools.selNSGA2)
@@ -120,7 +120,7 @@ if __name__ == "__main__":
     # import matplotlib.pyplot as plt
     # import numpy
 
-    # front = numpy.array([ind.fitness.values for ind in pop])
+    front = numpy.array([ind.fitness.values for ind in pop])
     # optimal_front = numpy.array(optimal_front)
     # plt.scatter(optimal_front[:,0], optimal_front[:,1], c="r")
     # plt.scatter(front[:,0], front[:,1], c="b")
