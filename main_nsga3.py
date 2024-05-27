@@ -113,21 +113,68 @@ if __name__ == "__main__":
 
     import matplotlib.pyplot as plt
     import mpl_toolkits.mplot3d as Axes3d
-
-    fig = plt.figure(figsize=(7, 7))
-    ax = fig.add_subplot(111, projection="3d")
+    # import plotly.express as px
+    import plotly.graph_objects as go
 
     p = numpy.array([ind.fitness.values for ind in pop])
-    ax.scatter(p[:, 0], p[:, 1], p[:, 2], marker="o", s=24, label="Final Population")
-
-    ax.scatter(pf[:, 0], pf[:, 1], pf[:, 2], marker="x", c="k", s=32, label="Ideal Pareto Front")
-
     ref_points = tools.uniform_reference_points(NOBJ, P)
 
-    ax.scatter(ref_points[:, 0], ref_points[:, 1], ref_points[:, 2], marker="o", s=24, label="Reference Points")
+    # fig = plt.figure(figsize=(7, 7))
+    # ax = fig.add_subplot(111, projection="3d")
+    # ax.scatter(p[:, 0], p[:, 1], p[:, 2], marker="o", s=24, label="Final Population")
+    # ax.scatter(pf[:, 0], pf[:, 1], pf[:, 2], marker="x", c="k", s=32, label="Ideal Pareto Front")
+    # ax.scatter(ref_points[:, 0], ref_points[:, 1], ref_points[:, 2], marker="o", s=24, label="Reference Points")
+    # ax.view_init(elev=11, azim=-25)
+    # ax.autoscale(tight=True)
+    # plt.legend()
+    # plt.tight_layout()
+    # plt.savefig("nsga3.png", dpi=300)
+    
+    #%% Plotly figure
+    
+    # NSGA-III Solutions
+    trace1 = go.Scatter3d(x= p[:, 0],
+                          y= p[:, 1],
+                          z= p[:, 2],
+                          mode= 'markers',
+                          marker=dict(size= 8,
+                                      color= 'red',
+                                      line= dict(color= 'blue',
+                                                 width= 2)
+                                      ),
+                          name='Final Population')
 
-    ax.view_init(elev=11, azim=-25)
-    ax.autoscale(tight=True)
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig("nsga3.png", dpi=300)
+    # Ref-plane
+    trace2 = go.Scatter3d(x= ref_points[:, 0],
+                          y= ref_points[:, 1],
+                          z= ref_points[:, 2],
+                          mode= 'markers',
+                          marker= dict(size= 4,
+                                       color= 'black',
+                                       line= dict(color= 'grey',
+                                                  width= 1),
+                                       symbol='x'
+                                       ),
+                          name='Ideal Pareto-optimal Front')
+
+    layout = go.Layout(title= 'Problem-DTLZ2 (n_var=10, n_obj=3)',
+                        scene= dict(xaxis_title='obj-1',
+                                    yaxis_title='obj-2',
+                                    zaxis_title='obj-3')
+                        )
+    fig = go.Figure(data=[trace1, trace2], layout=layout)
+    
+    # fig = go.Figure(data=[trace1, trace2])
+    # fig.update_layout(
+    #     # xaxis_title= dict(text='f1'), 
+    #     # yaxis_title= dict(text='f2'),
+    #     # zaxis_title= dict(text='f3'),
+    #     title= f"Problem-DTLZ2 \$n_{{var}}=10\$, \$n_{{obj}}=3")
+    
+    fig.write_html('nsga3_dtlz2.html', auto_open=True)
+    
+    #%%
+    
+    
+    
+    
