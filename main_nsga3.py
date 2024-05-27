@@ -171,7 +171,7 @@ if __name__ == "__main__":
     #     # zaxis_title= dict(text='f3'),
     #     title= f"Problem-DTLZ2 \$n_{{var}}=10\$, \$n_{{obj}}=3")
     
-    fig.write_html('nsga3_dtlz2.html', auto_open=True)
+    fig.write_html('figures/nsga3_dtlz2.html', auto_open=True)
     
     #%%
     
