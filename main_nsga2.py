@@ -105,24 +105,67 @@ def main(seed=None):
     return pop, logbook
 
 if __name__ == "__main__":
-    # with open("pareto_front/zdt1_front.json") as optimal_front_data:
-    #     optimal_front = json.load(optimal_front_data)
+    with open("zdt1_front.json") as optimal_front_data:
+        optimal_front = json.load(optimal_front_data)
     # Use 500 of the 1000 points in the json file
-    # optimal_front = sorted(optimal_front[i] for i in range(0, len(optimal_front), 2))
+    optimal_front = sorted(optimal_front[i] for i in range(0, len(optimal_front), 2))
 
     pop, stats = main()
-    # pop.sort(key=lambda x: x.fitness.values)
+    pop.sort(key=lambda x: x.fitness.values)
 
-    # print(stats)
-    # print("Convergence: ", convergence(pop, optimal_front))
-    # print("Diversity: ", diversity(pop, optimal_front[0], optimal_front[-1]))
+    print(stats)
+    print("Convergence: ", convergence(pop, optimal_front))
+    print("Diversity: ", diversity(pop, optimal_front[0], optimal_front[-1]))
 
-    # import matplotlib.pyplot as plt
-    # import numpy
+    #%%
+    import matplotlib.pyplot as plt
+    import numpy
 
     front = numpy.array([ind.fitness.values for ind in pop])
-    # optimal_front = numpy.array(optimal_front)
-    # plt.scatter(optimal_front[:,0], optimal_front[:,1], c="r")
-    # plt.scatter(front[:,0], front[:,1], c="b")
-    # plt.axis("tight")
-    # plt.show()
+    optimal_front = numpy.array(optimal_front)
+    plt.scatter(optimal_front[:,0], optimal_front[:,1], c="b")
+    plt.scatter(front[:,0], front[:,1], c="r")
+    plt.axis("tight")
+    plt.show()
+    
+    #%% Plotly
+    import plotly.graph_objects as go
+    
+    # NSGA-II Solutions
+    trace1 = go.Scatter(x= front[:, 0],
+                        y= front[:, 1],
+                        mode= 'markers',
+                        marker=dict(size= 8,
+                                    color= 'red',
+                                    line= dict(color= 'blue',
+                                               width= 2)
+                                    ),
+                        name='Final Population')
+
+    # Ref-plane
+    trace2 = go.Scatter(x= optimal_front[:, 0],
+                        y= ref_points[:, 1],
+                        mode= 'markers',
+                        marker= dict(size= 4,
+                                     color= 'black',
+                                     line= dict(color= 'grey',
+                                                width= 1),
+                                     symbol='x'
+                                     ),
+                        name='Ideal Pareto-optimal Front')
+
+    layout = go.Layout(title= 'Problem-ZDT1 (n_var=250, n_obj=2)',
+                        scene= dict(xaxis_title='obj-1',
+                                    yaxis_title='obj-2',
+                                    zaxis_title='obj-3')
+                        )
+    fig = go.Figure(data=[trace1, trace2], layout=layout)
+    
+    # fig = go.Figure(data=[trace1, trace2])
+    # fig.update_layout(
+    #     # xaxis_title= dict(text='f1'), 
+    #     # yaxis_title= dict(text='f2'),
+    #     # zaxis_title= dict(text='f3'),
+    #     title= f"Problem-DTLZ2 \$n_{{var}}=10\$, \$n_{{obj}}=3")
+    
+    fig.write_html('figures/nsga3_dtlz2.html', auto_open=True)
