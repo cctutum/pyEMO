@@ -7,5 +7,5 @@ Multi-objective Optimization using Evolutionary Algorithms
 
 ## NSGA-III Pareto-optimal front for DTLZ-2 problem
 
-![](figures/nsga3.png)
+![](figures/nsga3_dtlz2_plotly_screenshot.png)
 
