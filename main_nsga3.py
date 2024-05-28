@@ -115,9 +115,16 @@ if __name__ == "__main__":
     import mpl_toolkits.mplot3d as Axes3d
     # import plotly.express as px
     import plotly.graph_objects as go
+    import json
 
     p = numpy.array([ind.fitness.values for ind in pop])
     ref_points = tools.uniform_reference_points(NOBJ, P)
+    
+    with open("dtlz2_front.json") as optimal_front_data:
+        optimal_front = json.load(optimal_front_data)
+    # Use 500 of the 1000 points in the json file
+    optimal_front = sorted(optimal_front[i] for i in range(0, len(optimal_front), 2))
+
 
     # fig = plt.figure(figsize=(7, 7))
     # ax = fig.add_subplot(111, projection="3d")
@@ -133,7 +140,7 @@ if __name__ == "__main__":
     #%% Plotly figure
     
     # NSGA-III Solutions
-    trace1 = go.Scatter3d(x= p[:, 0],
+    trace0 = go.Scatter3d(x= p[:, 0],
                           y= p[:, 1],
                           z= p[:, 2],
                           mode= 'markers',
@@ -145,7 +152,7 @@ if __name__ == "__main__":
                           name='Final Population')
 
     # Ref-plane
-    trace2 = go.Scatter3d(x= ref_points[:, 0],
+    trace1 = go.Scatter3d(x= ref_points[:, 0],
                           y= ref_points[:, 1],
                           z= ref_points[:, 2],
                           mode= 'markers',
@@ -155,6 +162,19 @@ if __name__ == "__main__":
                                                   width= 1),
                                        symbol='x'
                                        ),
+                          name='Reference hyperplane')
+    
+    # Optimal front
+    trace2 = go.Scatter3d(x= optimal_front[:, 0],
+                          y= optimal_front[:, 1],
+                          z= optimal_front[:, 2],
+                          mode= 'markers',
+                          marker= dict(size= 4,
+                                       color= 'green',
+                                       line= dict(color= 'green',
+                                                  width= 1),
+                                       symbol='cross'
+                                       ),
                           name='Ideal Pareto-optimal Front')
 
     layout = go.Layout(title= 'Problem-DTLZ2 (n_var=10, n_obj=3)',
@@ -162,7 +182,7 @@ if __name__ == "__main__":
                                     yaxis_title='obj-2',
                                     zaxis_title='obj-3')
                         )
-    fig = go.Figure(data=[trace1, trace2], layout=layout)
+    fig = go.Figure(data=[trace0, trace1, trace2], layout=layout)
     
     # fig = go.Figure(data=[trace1, trace2])
     # fig.update_layout(
