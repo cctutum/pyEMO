@@ -115,16 +115,16 @@ if __name__ == "__main__":
     import mpl_toolkits.mplot3d as Axes3d
     # import plotly.express as px
     import plotly.graph_objects as go
+    import numpy as np
     import json
 
     p = numpy.array([ind.fitness.values for ind in pop])
     ref_points = tools.uniform_reference_points(NOBJ, P)
     
-    with open("dtlz2_front.json") as optimal_front_data:
-        optimal_front = json.load(optimal_front_data)
-    # Use 500 of the 1000 points in the json file
-    optimal_front = sorted(optimal_front[i] for i in range(0, len(optimal_front), 2))
-
+    with open("dtlz2_front.json") as f:
+        json_data = json.load(f)
+        pf = np.array(json.loads(json_data))
+        
 
     # fig = plt.figure(figsize=(7, 7))
     # ax = fig.add_subplot(111, projection="3d")
@@ -165,15 +165,15 @@ if __name__ == "__main__":
                           name='Reference hyperplane')
     
     # Optimal front
-    trace2 = go.Scatter3d(x= optimal_front[:, 0],
-                          y= optimal_front[:, 1],
-                          z= optimal_front[:, 2],
+    trace2 = go.Scatter3d(x= pf[:, 0],
+                          y= pf[:, 1],
+                          z= pf[:, 2],
                           mode= 'markers',
-                          marker= dict(size= 4,
-                                       color= 'green',
-                                       line= dict(color= 'green',
-                                                  width= 1),
-                                       symbol='cross'
+                          marker= dict(size= 6,
+                                       color= 'rgba(0,0,0,0)', # transparent
+                                       line= dict(color= 'rgb(0,0,0)', # black
+                                                  width= 2),
+                                       symbol='circle'
                                        ),
                           name='Ideal Pareto-optimal Front')
 
