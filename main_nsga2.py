@@ -132,10 +132,10 @@ if __name__ == "__main__":
     import plotly.graph_objects as go
     
     # NSGA-II Solutions
-    trace1 = go.Scatter(x= front[:, 0],
+    trace2 = go.Scatter(x= front[:, 0],
                         y= front[:, 1],
                         mode= 'markers',
-                        marker=dict(size= 8,
+                        marker=dict(size= 10,
                                     color= 'red',
                                     line= dict(color= 'blue',
                                                width= 2)
@@ -143,8 +143,8 @@ if __name__ == "__main__":
                         name='Final Population')
 
     # Ref-plane
-    trace2 = go.Scatter(x= optimal_front[:, 0],
-                        y= ref_points[:, 1],
+    trace1 = go.Scatter(x= optimal_front[:, 0],
+                        y= optimal_front[:, 1],
                         mode= 'markers',
                         marker= dict(size= 4,
                                      color= 'black',
@@ -153,19 +153,11 @@ if __name__ == "__main__":
                                      symbol='x'
                                      ),
                         name='Ideal Pareto-optimal Front')
-
-    layout = go.Layout(title= 'Problem-ZDT1 (n_var=250, n_obj=2)',
-                        scene= dict(xaxis_title='obj-1',
-                                    yaxis_title='obj-2',
-                                    zaxis_title='obj-3')
-                        )
-    fig = go.Figure(data=[trace1, trace2], layout=layout)
     
-    # fig = go.Figure(data=[trace1, trace2])
-    # fig.update_layout(
-    #     # xaxis_title= dict(text='f1'), 
-    #     # yaxis_title= dict(text='f2'),
-    #     # zaxis_title= dict(text='f3'),
-    #     title= f"Problem-DTLZ2 \$n_{{var}}=10\$, \$n_{{obj}}=3")
+    fig = go.Figure(data=[trace1, trace2])
     
-    fig.write_html('figures/nsga3_dtlz2.html', auto_open=True)
+    fig.update_layout(title='Problem-ZDT1 (n_var=250, n_obj=2)',
+                      xaxis_title='obj-1',
+                      yaxis_title='obj-2')
+    
+    fig.write_html('figures/nsga2_zdt1.html', auto_open=True)
