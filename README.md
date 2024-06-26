@@ -10,7 +10,4 @@ Multi-objective Optimization using Evolutionary Algorithms
 
 ![](figures/nsga3_dtlz2_plotly_screenshot.png)
 
-```mermaid
-flowchart LR
-    ItemA-->ItemB-->ItemC
-```
+
